@@ -8,7 +8,7 @@ st.caption("Powered by Keizo Haru")
 
 # Configuration
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel('gemini-3.5-flash')
 
 # Initialize Chat History
 if "messages" not in st.session_state:
@@ -22,7 +22,7 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# Chat Input (Pins to bottom automatically)
+# Chat Input (Pins to bottom)
 if prompt := st.chat_input("What is on your mind?"):
     st.chat_message("user").markdown(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
