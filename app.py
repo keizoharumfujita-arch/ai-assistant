@@ -14,16 +14,21 @@ model = genai.GenerativeModel('gemini-3.5-flash')
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# File Uploader
-uploaded_file = st.file_uploader("Upload a file", type=['png', 'jpg', 'jpeg', 'pdf', 'txt'])
-
 # Display History
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# Chat Input (Pins to bottom)
-if prompt := st.chat_input("What is on your mind?"):
+# Bottom Input Area
+with st.container():
+    col1, col2 = st.columns([1, 10])
+    with col1:
+        uploaded_file = st.file_uploader("Upload", type=['png', 'jpg', 'jpeg', 'pdf', 'txt'], label_visibility="collapsed")
+    with col2:
+        prompt = st.chat_input("What is on your mind?")
+
+# Process Input
+if prompt:
     st.chat_message("user").markdown(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
     
@@ -31,3 +36,4 @@ if prompt := st.chat_input("What is on your mind?"):
     with st.chat_message("assistant"):
         st.markdown(response.text)
     st.session_state.messages.append({"role": "assistant", "content": response.text})
+    st.rerun()
